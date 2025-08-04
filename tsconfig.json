@@ -3,7 +3,8 @@
   "include": [
     ".astro/types.d.ts",
     "src/**/*",
-    "**/*.astro"
+    "**/*.astro",
+    "src/env.d.ts"
   ],
   "exclude": [
     "dist",
