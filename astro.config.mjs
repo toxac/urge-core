@@ -8,11 +8,15 @@ import solidJs from '@astrojs/solid-js';
 import sitemap from '@astrojs/sitemap';
 import AstroPWA from '@vite-pwa/astro'
 
+import vercel from '@astrojs/vercel';
+
 // https://astro.build/config
 export default defineConfig({
+  output:'server',
   vite: {
     plugins: [tailwindcss()]
   },
 
-  integrations: [solidJs({ devtools: true }), sitemap(), AstroPWA()]
+  integrations: [solidJs({ devtools: true }), sitemap(), AstroPWA()],
+  adapter: vercel()
 });
