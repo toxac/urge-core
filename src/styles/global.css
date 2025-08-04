@@ -1,1 +1,33 @@
 @import "tailwindcss";
+@plugin "daisyui";
+
+@layer base {
+  /* Define font family CSS variable */
+  :root {
+    --font-inter: 'Inter', system-ui, sans-serif;
+  }
+
+  /* Apply font family globally */
+  html {
+    font-family: var(--font-inter);
+    font-weight: 400; /* Default weight */
+  }
+
+  /* Optional: Set default weights for headings */
+  h1, h2, h3, h4 {
+    font-weight: 700;
+  }
+}
+
+@layer utilities {
+  /* Create utility classes for less common weights */
+  .font-light {
+    font-weight: 300;
+  }
+  .font-semibold {
+    font-weight: 600;
+  }
+  .font-extrabold {
+    font-weight: 800;
+  }
+}

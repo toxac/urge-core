@@ -31,10 +31,13 @@ const RAW_RUNTIME_STATE =
           ["@astrojs/check", "virtual:7cc7fc7e39931b0f5fedec38525a1a6a4807e64c3f1e3487554c835cdbc9892968243d1b6627dc35ddeef8bcd428995494b624e95eb125fae3c03cfcc60a4d1c#npm:0.9.4"],\
           ["@astrojs/sitemap", "npm:3.4.2"],\
           ["@astrojs/solid-js", "virtual:7cc7fc7e39931b0f5fedec38525a1a6a4807e64c3f1e3487554c835cdbc9892968243d1b6627dc35ddeef8bcd428995494b624e95eb125fae3c03cfcc60a4d1c#npm:5.1.0"],\
+          ["@nanostores/solid", "virtual:7cc7fc7e39931b0f5fedec38525a1a6a4807e64c3f1e3487554c835cdbc9892968243d1b6627dc35ddeef8bcd428995494b624e95eb125fae3c03cfcc60a4d1c#npm:1.0.0"],\
           ["@tailwindcss/vite", "virtual:7cc7fc7e39931b0f5fedec38525a1a6a4807e64c3f1e3487554c835cdbc9892968243d1b6627dc35ddeef8bcd428995494b624e95eb125fae3c03cfcc60a4d1c#npm:4.1.11"],\
           ["@vite-pwa/astro", "virtual:7cc7fc7e39931b0f5fedec38525a1a6a4807e64c3f1e3487554c835cdbc9892968243d1b6627dc35ddeef8bcd428995494b624e95eb125fae3c03cfcc60a4d1c#npm:1.1.0"],\
           ["astro", "npm:5.12.8"],\
           ["core", "workspace:."],\
+          ["daisyui", "npm:5.0.50"],\
+          ["nanostores", "npm:1.0.1"],\
           ["solid-devtools", "virtual:7cc7fc7e39931b0f5fedec38525a1a6a4807e64c3f1e3487554c835cdbc9892968243d1b6627dc35ddeef8bcd428995494b624e95eb125fae3c03cfcc60a4d1c#npm:0.34.3"],\
           ["solid-js", "npm:1.9.7"],\
           ["tailwindcss", "npm:4.1.11"],\
@@ -2886,6 +2889,32 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["@nanostores/solid", [\
+      ["npm:1.0.0", {\
+        "packageLocation": "../../../../.yarn/berry/cache/@nanostores-solid-npm-1.0.0-fb4e4b5d4d-10c0.zip/node_modules/@nanostores/solid/",\
+        "packageDependencies": [\
+          ["@nanostores/solid", "npm:1.0.0"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:7cc7fc7e39931b0f5fedec38525a1a6a4807e64c3f1e3487554c835cdbc9892968243d1b6627dc35ddeef8bcd428995494b624e95eb125fae3c03cfcc60a4d1c#npm:1.0.0", {\
+        "packageLocation": "./.yarn/__virtual__/@nanostores-solid-virtual-2ea2bde732/5/.yarn/berry/cache/@nanostores-solid-npm-1.0.0-fb4e4b5d4d-10c0.zip/node_modules/@nanostores/solid/",\
+        "packageDependencies": [\
+          ["@nanostores/solid", "virtual:7cc7fc7e39931b0f5fedec38525a1a6a4807e64c3f1e3487554c835cdbc9892968243d1b6627dc35ddeef8bcd428995494b624e95eb125fae3c03cfcc60a4d1c#npm:1.0.0"],\
+          ["@types/nanostores", null],\
+          ["@types/solid-js", null],\
+          ["nanostores", "npm:1.0.1"],\
+          ["solid-js", "npm:1.9.7"]\
+        ],\
+        "packagePeers": [\
+          "@types/nanostores",\
+          "@types/solid-js",\
+          "nanostores",\
+          "solid-js"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["@napi-rs/wasm-runtime", [\
       ["npm:0.2.12", {\
         "packageLocation": "../../../../.yarn/berry/cache/@napi-rs-wasm-runtime-npm-0.2.12-8f0d65e253-10c0.zip/node_modules/@napi-rs/wasm-runtime/",\
@@ -5099,10 +5128,13 @@ const RAW_RUNTIME_STATE =
           ["@astrojs/check", "virtual:7cc7fc7e39931b0f5fedec38525a1a6a4807e64c3f1e3487554c835cdbc9892968243d1b6627dc35ddeef8bcd428995494b624e95eb125fae3c03cfcc60a4d1c#npm:0.9.4"],\
           ["@astrojs/sitemap", "npm:3.4.2"],\
           ["@astrojs/solid-js", "virtual:7cc7fc7e39931b0f5fedec38525a1a6a4807e64c3f1e3487554c835cdbc9892968243d1b6627dc35ddeef8bcd428995494b624e95eb125fae3c03cfcc60a4d1c#npm:5.1.0"],\
+          ["@nanostores/solid", "virtual:7cc7fc7e39931b0f5fedec38525a1a6a4807e64c3f1e3487554c835cdbc9892968243d1b6627dc35ddeef8bcd428995494b624e95eb125fae3c03cfcc60a4d1c#npm:1.0.0"],\
           ["@tailwindcss/vite", "virtual:7cc7fc7e39931b0f5fedec38525a1a6a4807e64c3f1e3487554c835cdbc9892968243d1b6627dc35ddeef8bcd428995494b624e95eb125fae3c03cfcc60a4d1c#npm:4.1.11"],\
           ["@vite-pwa/astro", "virtual:7cc7fc7e39931b0f5fedec38525a1a6a4807e64c3f1e3487554c835cdbc9892968243d1b6627dc35ddeef8bcd428995494b624e95eb125fae3c03cfcc60a4d1c#npm:1.1.0"],\
           ["astro", "npm:5.12.8"],\
           ["core", "workspace:."],\
+          ["daisyui", "npm:5.0.50"],\
+          ["nanostores", "npm:1.0.1"],\
           ["solid-devtools", "virtual:7cc7fc7e39931b0f5fedec38525a1a6a4807e64c3f1e3487554c835cdbc9892968243d1b6627dc35ddeef8bcd428995494b624e95eb125fae3c03cfcc60a4d1c#npm:0.34.3"],\
           ["solid-js", "npm:1.9.7"],\
           ["tailwindcss", "npm:4.1.11"],\
@@ -5187,6 +5219,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../../.yarn/berry/cache/csstype-npm-3.1.3-e9a1c85013-10c0.zip/node_modules/csstype/",\
         "packageDependencies": [\
           ["csstype", "npm:3.1.3"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["daisyui", [\
+      ["npm:5.0.50", {\
+        "packageLocation": "../../../../.yarn/berry/cache/daisyui-npm-5.0.50-ade8b72246-10c0.zip/node_modules/daisyui/",\
+        "packageDependencies": [\
+          ["daisyui", "npm:5.0.50"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -8023,6 +8064,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "../../../../.yarn/berry/cache/nanoid-npm-3.3.11-f98c1f9ef6-10c0.zip/node_modules/nanoid/",\
         "packageDependencies": [\
           ["nanoid", "npm:3.3.11"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["nanostores", [\
+      ["npm:1.0.1", {\
+        "packageLocation": "../../../../.yarn/berry/cache/nanostores-npm-1.0.1-9f3cb53ea0-10c0.zip/node_modules/nanostores/",\
+        "packageDependencies": [\
+          ["nanostores", "npm:1.0.1"]\
         ],\
         "linkType": "HARD"\
       }]\

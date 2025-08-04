@@ -1,5 +1,7 @@
-// Custom types declarations
-declare var myString: string;
+/// <reference types="astro/client" />
+/// <reference types="vite/client" />
 
-// Astro types, not necessary if you already have a `tsconfig.json`
-/// <reference path="../.astro/types.d.ts" />
+declare module '*.mdx' {
+  let MDXComponent: (props: any) => JSX.Element;
+  export default MDXComponent;
+}
