@@ -1,13 +1,9 @@
 import { atom, computed } from 'nanostores';
 import type { User, Session } from '@supabase/supabase-js';
+import type { AuthStoreState } from '../types';
 
-export interface AuthState {
-  user: User | null
-  session: Session | null
-  loading: boolean
-}
 
-export const authStore = atom<AuthState>({
+export const authStore = atom<AuthStoreState>({
   user: null,
   session: null,
   loading: true
