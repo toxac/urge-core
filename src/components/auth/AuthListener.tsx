@@ -9,6 +9,7 @@ export default function AuthListener() {
 
         // Get initial session
         supabase.auth.getSession().then(({ data: { session } }) => {
+            console.log(session);
             setAuth(session?.user ?? null, session)
         })
 

@@ -31,3 +31,50 @@
     font-weight: 800;
   }
 }
+
+@plugin "daisyui/theme" {
+  name: "wastedalmost-minimal";
+  default: false;
+  prefersdark: false;
+  color-scheme: "light";
+  
+  /* Base colors - simplified grayscale */
+  --color-base-100: oklch(100% 0 0);         /* Pure white */
+  --color-base-200: oklch(95% 0 0);          /* Very light gray */
+  --color-base-300: oklch(85% 0 0);          /* Light gray */
+  --color-base-content: oklch(20% 0 0);      /* Dark gray for text */
+  
+  /* Primary brand color - more prominent */
+  --color-primary: oklch(67.27% 0.2165 32.78); /* Your original primary */
+  --color-primary-content: oklch(100% 0 0);    /* White text on primary */
+  
+  /* Secondary/Accent - simplified to match primary */
+  --color-secondary: oklch(85% 0 0);           /* Light gray */
+  --color-secondary-content: oklch(20% 0 0);    /* Dark text */
+  --color-accent: var(--color-primary);        /* Same as primary */
+  --color-accent-content: var(--color-primary-content);
+  
+  /* Neutral - simplified */
+  --color-neutral: oklch(20% 0 0);             /* Dark gray */
+  --color-neutral-content: oklch(100% 0 0);    /* White text */
+  
+  /* Status colors - minimal but distinct */
+  --color-info: oklch(85% 0 0);                /* Light gray */
+  --color-info-content: oklch(20% 0 0);
+  --color-success: oklch(70% 0.14 182.503);    /* Your original green */
+  --color-success-content: oklch(100% 0 0);
+  --color-warning: oklch(79% 0.184 86.047);    /* Your original yellow */
+  --color-warning-content: oklch(20% 0 0);
+  --color-error: oklch(63% 0.237 25.331);      /* Your original red */
+  --color-error-content: oklch(100% 0 0);
+  
+  /* Borders & radius - consistent minimal rounding */
+  --border: 1px;
+  --radius-selector: 0.5rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  
+  /* Effects - flat design */
+  --depth: 0;
+  --noise: 0;
+}

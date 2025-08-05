@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import AuthListener from "@components/auth/AuthListener";
 interface Props {
   title: string;
   description: string;
@@ -39,6 +40,7 @@ const { title, description } = Astro.props;
     <title>{title}</title>
   </head>
   <body>
+    <AuthListener client:load />
     <div class="drawer">
       <input id="my-drawer-3" type="checkbox" class="drawer-toggle" />
       <div class="drawer-content flex flex-col">
