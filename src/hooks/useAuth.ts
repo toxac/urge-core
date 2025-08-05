@@ -3,7 +3,6 @@ import { useStore } from '@nanostores/solid'
 import { authStore, setAuth, setLoading } from '../stores/auth'
 import { createSupbaseBrowserClient } from '../lib/supabase/client'
 
-
 export function useAuth() {
     const auth = useStore(authStore)
     const supabase = createSupbaseBrowserClient();
@@ -24,8 +23,9 @@ export function useAuth() {
         )
 
         return () => subscription.unsubscribe()
-    })
-
+    });
+  
+    // Login helper
     const login = async (email: string, password: string) => {
         setError(null)
         setLoading(true)
@@ -42,7 +42,6 @@ export function useAuth() {
             if (!response.ok) {
                 throw new Error(data.error)
             }
-
             return { success: true }
         } catch (err: any) {
             setError(err.message)
@@ -52,6 +51,7 @@ export function useAuth() {
         }
     }
 
+    // Signup Handler 
     const register = async (email: string, password: string, confirmPassword: string) => {
         setError(null)
         setLoading(true)
@@ -68,16 +68,16 @@ export function useAuth() {
             if (!response.ok) {
                 throw new Error(data.error)
             }
-
             return { success: true, message: data.message }
         } catch (err: any) {
             setError(err.message)
             return { success: false, error: err.message }
         } finally {
-            setLoading(false)
+        setLoading(false)
         }
     }
 
+    // Forgot Password Handler
     const forgotPassword = async (email: string) => {
         setError(null)
         setLoading(true)
@@ -104,6 +104,7 @@ export function useAuth() {
         }
     }
 
+    // Logout handler
     const logout = async () => {
         setError(null)
         setLoading(true)
@@ -127,12 +128,12 @@ export function useAuth() {
         }
     }
 
-    return {
-        auth,
-        error,
-        login,
-        register,
-        forgotPassword,
-        logout
-    }
+  return {
+    auth,
+    error,
+    login,
+    register,
+    forgotPassword,
+    logout
+  }
 }
