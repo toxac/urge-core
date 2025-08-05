@@ -13,10 +13,11 @@ interface ImportMeta {
   readonly env: ImportMetaEnv
 }
 
-declare namespace App {
-  interface Locals {
-    session: Session | null;
-    user: User | null;
-    // Add any other custom locals you need
+declare global {
+  namespace App {
+    interface Locals {
+      session: Session | null;
+      user: User | null;
+    }
   }
 }

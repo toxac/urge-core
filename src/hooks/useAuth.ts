@@ -1,11 +1,11 @@
 import { createSignal, createEffect, onMount } from 'solid-js'
 import { useStore } from '@nanostores/solid'
 import { authStore, setAuth, setLoading } from '../stores/auth'
-import { createSupbaseBrowserClient } from '../lib/supabase/client'
+import { supabaseBrowserClient } from '../lib/supabase/client'
 
 export function useAuth() {
     const auth = useStore(authStore)
-    const supabase = createSupbaseBrowserClient();
+    const supabase = supabaseBrowserClient;
 
     const [error, setError] = createSignal<string | null>(null)
 
