@@ -1,5 +1,6 @@
 // src/stores/profile.store.ts
 import { atom, computed } from 'nanostores';
+import { supabaseBrowserClient } from '../lib/supabase/client';
 import type { Database } from '../../database.types';
 
 type Profile = Database['public']['Tables']['user_profiles']['Row'];
@@ -15,7 +16,22 @@ const REQUIRED_FIELDS = [
   'username'
 ] as const satisfies ReadonlyArray<keyof Profile>;
 
+
 export const profileStore = atom<Profile | null>(null);
+
+const supabase = supabaseBrowserClient;
+
+export async function loadProfile(userId: string) {
+  const { data, error } = await supabase
+    .from('user_profiles')
+    .select('*')
+    .eq('user_id', userId)
+    .single();
+
+  if (error) throw error;
+  profileStore.set(data);
+  return data;
+}
 
 // Helper to check required fields
 export const isProfileComplete = computed(profileStore, (profile) => {

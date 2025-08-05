@@ -1,5 +1,4 @@
 import { onMount, onCleanup } from 'solid-js'
-import { useAuth } from '../../hooks/useAuth';
 import { setAuth } from '../../stores/auth';
 import { supabaseBrowserClient } from '../../lib/supabase/client'
 
