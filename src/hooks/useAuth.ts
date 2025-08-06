@@ -119,7 +119,7 @@ export function useAuth() {
                 throw new Error(data.error)
             }
 
-            return { success: true }
+            return { success: true, error: null }
         } catch (err: any) {
             setError(err.message)
             return { success: false, error: err.message }
