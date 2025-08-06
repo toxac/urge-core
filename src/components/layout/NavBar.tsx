@@ -34,7 +34,7 @@ export default function Navbar() {
     });
 
     return (
-        <div class="navbar bg-base-100 shadow-sm">
+        <div class="navbar bg-base-100 shadow-sm capitalize">
             <div class="navbar-start">
                 <div class="dropdown">
                     {/* Mobile menu button */}
@@ -68,7 +68,11 @@ export default function Navbar() {
                         </For>
                     </ul>
                 </div>
-                <a href="/" class="btn btn-ghost text-xl">Your Logo</a>
+                {/* Brand/Logo */}
+                <a href="/" class="px-2 h-full">
+                    <img src="/logo/logo_nav.png" class="h-[2.5rem] object-contain"
+                        alt="Logo" />
+                </a>
             </div>
             <div class="navbar-center hidden lg:flex">
                 {/* Desktop menu */}
@@ -85,7 +89,7 @@ export default function Navbar() {
                                         <ul class="p-2 bg-base-100 z-[1]">
                                             <For each={item.submenu}>
                                                 {(subItem) => (
-                                                    <li class="capitalize"><a href={subItem.link}>{subItem.title}</a></li>
+                                                    <li><a href={subItem.link}>{subItem.title}</a></li>
                                                 )}
                                             </For>
                                         </ul>
@@ -100,7 +104,10 @@ export default function Navbar() {
                 <Show
                     when={auth()?.session}
                     fallback={
-                        <a class="btn btn-primary" href="/auth/login">Login</a>
+                        <div class="flex gap-2">
+                            <a class="btn btn-sm btn-primary" href="/auth/register">Register</a>
+                            <a class="btn btn-sm btn-info" href="/auth/login">Login</a>
+                        </div>
                     }
                 >
                     <div class="dropdown dropdown-end">

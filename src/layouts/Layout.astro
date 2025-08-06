@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import AuthListener from "@components/auth/AuthListener";
 import Navbar from "@components/layout/NavBar";
+import Footer from "@components/layout/Footer.astro";
 
 interface Props {
   title: string;
@@ -11,7 +12,7 @@ const { title, description } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="wastedalmost-minimal">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -45,6 +46,7 @@ const { title, description } = Astro.props;
     <AuthListener client:load />
     <Navbar client:load />
     <slot />
+    <Footer />
   </body>
 </html>
 
