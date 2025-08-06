@@ -2,6 +2,7 @@ import { createSignal, createEffect, Show, For } from "solid-js";
 import { useStore } from "@nanostores/solid";
 import { profileStore } from "../../stores/profile";
 import { authStore } from "../../stores/auth";
+import Logout from "@components/auth/Logout";
 import type { AuthStoreState } from "../../types";
 
 const menuItems = [
@@ -28,6 +29,7 @@ export default function Navbar() {
     createEffect(() => {
         if ($auth()) {
             setAuth($auth());
+            console.log(auth());
         }
     });
 
@@ -96,9 +98,9 @@ export default function Navbar() {
             </div>
             <div class="navbar-end">
                 <Show
-                    when={auth()}
+                    when={auth()?.session}
                     fallback={
-                        <a class="btn btn-primary" href="/login">Login</a>
+                        <a class="btn btn-primary" href="/auth/login">Login</a>
                     }
                 >
                     <div class="dropdown dropdown-end">
@@ -112,7 +114,7 @@ export default function Navbar() {
                         <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
                             <li><a href="/profile">Profile</a></li>
                             <li><a href="/settings">Settings</a></li>
-                            <li><a href="/logout">Logout</a></li>
+                            <li><Logout client-only="solid-js" /></li>
                         </ul>
                     </div>
                 </Show>
