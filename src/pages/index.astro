@@ -1,47 +1,43 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import {Icon}
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout title="urge" description="Start your busines with urge">
-  <div class="max-w-2xl mx-auto p-6 space-y-8">
-    <div class="prose mx-auto">
-      <h1>70ch Line Length Test</h1>
-      <p>
-        This width allows for approximately 15-20 words per line, which balances
-        readability with content density. Studies show this works well for users
-        who scan content quickly.
-      </p>
-
-      <ul>
-        <li>
-          <strong>Pros</strong>: Fewer line breaks, better for tables/code
-        </li>
-        <li><strong>Cons</strong>: Slightly harder to track between lines</li>
-      </ul>
-
-      <blockquote>
-        "Optimal line length depends on context—70ch shines for reference
-        material."
-      </blockquote>
-    </div>
-    <div class="text-optimal">
-      <div class="border-b" style="width: 10ch">0000000000</div>
-      <p>↑ Measure if this line is exactly 10 zeros wide</p>
-      <p>
-        The quick brown fox jumps over the lazy dog. Pack my box with five dozen
-        liquor jugs.
-      </p>
-    </div>
-
-    <div class="prose">
-      <p>
-        The quick brown fox jumps over the lazy dog. Pack my box with five dozen
-        liquor jugs. The five boxing wizards jump quickly. How vexingly quick
-        daft zebras jump!
-      </p>
-    </div>
-  </div>
+    <main class="min-h-screen flex items-center justify-center bg-base-200 px-5">
+        <div class="card w-full md:w-96 lg:w-1/4 bg-base-100 shadow-xl">
+            <label class="input validator">
+                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <g
+                    stroke-linejoin="round"
+                    stroke-linecap="round"
+                    stroke-width="2.5"
+                    fill="none"
+                    stroke="currentColor"
+                    >
+                    <path
+                        d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"
+                    ></path>
+                    <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle>
+                    </g>
+                </svg>
+                <input
+                    type="password"
+                    required
+                    placeholder="Password"
+                    minlength="8"
+                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                    title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
+                />
+                </label>
+                <p class="validator-hint hidden">
+                Must be more than 8 characters, including
+                <br />At least one number <br />At least one lowercase letter <br />At least one uppercase letter
+                </p>
+        
+        </div>
+    </main>
 </Layout>

@@ -98,41 +98,44 @@ export default function RegisterForm() {
 
                 <Show when={!isSuccess()}>
                     <form use:form class="flex flex-col gap-3">
+
                         {/* Username Field */}
-                        <div class="form-control w-full">
-                            <label class="input">
-                                Username
-
-                                <input
-                                    name="username"
-                                    type="text"
-                                    class="input input-bordered w-full"
-                                    placeholder="your_username"
-                                    onBlur={(e) => checkUsername(e.currentTarget.value)}
-                                />
-                            </label>
-                            <div class="h-6 mt-1 text-sm">
-                                {isCheckingUsername() && <span class="text-info">Checking...</span>}
-                                {usernameAvailable() === true && <span class="text-success">✓ Available</span>}
-                                {usernameAvailable() === false && <span class="text-error">✗ Taken</span>}
-                                {errors().username && <span class="text-error">{errors().username}</span>}
-                            </div>
-
+                        <label class="input w-full">
+                            <Icon icon="mdi:account" width="24" height="24" class="text-nuetral" />
+                            <input
+                                type="text"
+                                class="grow px-2"
+                                name="username"
+                                placeholder="username"
+                                onBlur={(e) => checkUsername(e.currentTarget.value)}
+                            />
+                        </label>
+                        <div class="mb-1 text-xs">
+                            {isCheckingUsername() && <span class="text-info">Checking...</span>}
+                            {usernameAvailable() === true && <p class="flex items-center justify-end gap-2 opacity-60"><Icon icon="mdi:check-circle-outline" width="18" height="18" class="text-success" /> Available</p>}
+                            {usernameAvailable() === false && <span class="text-error">✗ Taken</span>}
+                            {errors().username && <span class="text-error">{errors().username}</span>}
                         </div>
 
-                        {/* Email Field */}
-                        <div class="form-control w-full">
-                            <label class="label">
-                                <span class="label-text">Email</span>
-                            </label>
+
+                        <label class="input w-full">
+                            <Icon icon="mdi:alternate-email" width="24" height="24" class="text-nuetral" />
                             <input
                                 name="email"
                                 type="email"
-                                class="input input-bordered w-full"
+                                class="grow px-2"
                                 placeholder="your@email.com"
+                                onBlur={(e) => checkUsername(e.currentTarget.value)}
                             />
+                        </label>
+                        <div class="h-6 mt-1 text-sm">
                             {errors().email && <span class="text-error text-sm">{errors().email}</span>}
                         </div>
+
+
+
+                        {/* Email Field */}
+
 
                         {/* Password Fields */}
                         <div class="form-control w-full">

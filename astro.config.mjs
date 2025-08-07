@@ -4,6 +4,7 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 
 import solidJs from '@astrojs/solid-js';
+import icon from "astro-icon";
 
 import sitemap from '@astrojs/sitemap';
 import AstroPWA from '@vite-pwa/astro'
@@ -17,6 +18,6 @@ export default defineConfig({
     plugins: [tailwindcss()]
   },
 
-  integrations: [solidJs({ devtools: true }), sitemap(), AstroPWA()],
+  integrations: [solidJs({ devtools: true }), sitemap(), AstroPWA(), icon()],
   adapter: vercel()
 });
