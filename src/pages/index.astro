@@ -6,7 +6,46 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="urge" description="Start your busines with urge">
-  <div class="alert alert-info">
-    If you see this styled alert, DaisyUI is loaded
+  <div>
+    <ul class="stack-cards js-stack-cards">
+      <li class="stack-cards__item js-stack-cards__item">
+        <h1>Card 1</h1>
+      </li>
+
+      <li class="stack-cards__item js-stack-cards__item">
+        <h1>Card 2</h1>
+      </li>
+
+      <li class="stack-cards__item js-stack-cards__item">
+        <h1>Card 3</h1>
+      </li>
+
+      <!-- additional card items here -->
+    </ul>
   </div>
 </Layout>
+<style>
+  .stack-cards {
+    position: relative;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .stack-cards__item {
+    position: sticky;
+    top: var(--space-sm);
+    transform-origin: center top;
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 200px; /* Set a fixed height or min-height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+
+<script is:inline src="/js/stack-cards.js"></script>
