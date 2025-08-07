@@ -1,43 +1,72 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import {Icon}
+import { Icon } from "astro-icon/components";
 
 // Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
 // Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout title="urge" description="Start your busines with urge">
-    <main class="min-h-screen flex items-center justify-center bg-base-200 px-5">
-        <div class="card w-full md:w-96 lg:w-1/4 bg-base-100 shadow-xl">
-            <label class="input validator">
-                <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <g
-                    stroke-linejoin="round"
-                    stroke-linecap="round"
-                    stroke-width="2.5"
-                    fill="none"
-                    stroke="currentColor"
-                    >
-                    <path
-                        d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z"
-                    ></path>
-                    <circle cx="16.5" cy="7.5" r=".5" fill="currentColor"></circle>
-                    </g>
-                </svg>
-                <input
-                    type="password"
-                    required
-                    placeholder="Password"
-                    minlength="8"
-                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                    title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
-                />
-                </label>
-                <p class="validator-hint hidden">
-                Must be more than 8 characters, including
-                <br />At least one number <br />At least one lowercase letter <br />At least one uppercase letter
-                </p>
-        
+  <main class="min-h-screen flex items-center justify-center bg-base-200 px-5">
+    <div class="card w-full md:w-96 lg:w-1/4 bg-base-100 shadow-xl">
+      <div class="flex flex-col px-5 py-10 gap-4">
+        <label class="input w-full">
+          <Icon name="mdi:account" />
+          <input
+            type="text"
+            name="username"
+            class="px-2 grow"
+            placeholder="unique username"
+          />
+          <span class="badge badge-neutral badge-xs">Error</span>
+        </label>
+        <label class="input w-full">
+          <Icon name="mdi:alternate-email" />
+          <input
+            type="email"
+            name="email"
+            class="px-2 grow"
+            placeholder="user@user.com"
+          />
+          <span class="badge badge-neutral badge-xs">Error</span>
+        </label>
+        <label class="input w-full">
+          <Icon name="mdi:key-variant" />
+          <input type="password" name="password" class="px-2 grow" />
+          <span class="badge badge-neutral badge-xs">Error</span>
+        </label>
+        <label class="input w-full">
+          <Icon name="mdi:key-variant" />
+          <input type="password" name="confirmpassword" class="px-2 grow" />
+          <span class="badge badge-neutral badge-xs">Error</span>
+        </label>
+
+        <label class="label mt-4">
+          <input
+            type="checkbox"
+            checked="checked"
+            class="checkbox checkbox-primary checkbox-sm"
+          />
+          <span class="text-xs">I accept all terms & conditions</span>
+        </label>
+        <label class="label -mt-2">
+          <input
+            type="checkbox"
+            checked="checked"
+            class="checkbox checkbox-primary checkbox-sm"
+          />
+          <span class="text-xs">Agree to terms</span>
+        </label>
+
+        <button class="btn btn-neutral mt-4" type="submit"> Register </button>
+
+        <div class="divider">OR</div>
+        <div class="text-center text-sm">
+          <a href="/auth/login" class="link link-primary">
+            Already have an account? Login
+          </a>
         </div>
-    </main>
+      </div>
+    </div>
+  </main>
 </Layout>
