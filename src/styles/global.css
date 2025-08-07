@@ -4,7 +4,8 @@
 @layer base {
   /* Define font family CSS variable */
   :root {
-    --font-inter: 'Inter', system-ui, sans-serif;
+    --font-general-sans: 'GeneralSans-Variable', system-ui, sans-serif;
+    --font-switzer: 'Switzer-Variable', system-ui, sans-serif;
   }
 
   /* Apply font family globally */
