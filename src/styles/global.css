@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 @plugin "daisyui";
 
 @layer base {
@@ -6,6 +7,42 @@
   :root {
     --font-heading: 'GeneralSans-Variable', system-ui, sans-serif;
     --font-body: 'Switzer-Variable', system-ui, sans-serif;
+
+    /* Base size (ideal for Switzer paragraphs) */
+    --text-base-size: 1rem; /* 16px */
+    --space-unit: 1rem; /* 16px */
+
+    /* Type scale */
+    --text-xs:    calc(var(--text-base-size) / 1.25);  /* 12.8px */
+    --text-sm:    var(--text-base-size);               /* 16px */
+    --text-md:    calc(var(--text-base-size) * 1.25);  /* 20px */
+    --text-lg:    calc(var(--text-base-size) * 1.563); /* 24.98px */
+    --text-xl:    calc(var(--text-base-size) * 1.953); /* 31.25px */
+    --text-2xl:   calc(var(--text-base-size) * 2.441); /* 39.06px */
+    --text-3xl:   calc(var(--text-base-size) * 3.052); /* 48.83px */
+
+    /* Line heights */
+    --leading-tight: 1.2;
+    --leading-normal: 1.5;
+    --leading-loose: 1.8;
+
+    /* Spacing scale */
+    --space-xxs: calc(var(--space-unit) * 0.25);  /* 4px  */
+    --space-xs:  calc(var(--space-unit) * 0.5);   /* 8px  */
+    --space-sm:  calc(var(--space-unit) * 0.75);  /* 12px */
+    --space-md:  var(--space-unit);               /* 16px */
+    --space-lg:  calc(var(--space-unit) * 1.5);   /* 24px */
+    --space-xl:  calc(var(--space-unit) * 2);     /* 32px */
+    --space-2xl: calc(var(--space-unit) * 3);     /* 48px */
+    --space-3xl: calc(var(--space-unit) * 4);     /* 64px */
+
+    /* Color definitions */
+    --color-primary: oklch(67.27% 0.2165 32.78); /* Your primary color */
+    --color-primary-content: oklch(100% 0 0);     /* Text on primary */
+    --color-secondary: oklch(85% 0 0);            /* Light gray */
+    --color-base-100: oklch(100% 0 0);            /* Pure white */
+    --color-base-content: oklch(20% 0 0);         /* Dark text */
+
   }
   /* Apply font family globally */
   html {
@@ -18,6 +55,13 @@
     font-family: var(--font-heading);
     font-variation-settings: "wght" 700; /* Bold weight */
   }
+
+  @media (max-width: 768px) {
+  :root {
+    --text-base-size: 0.875rem; /* 14px base on mobile */
+    --space-unit: 0.875rem;     /* Adjusted spacing */
+  }
+}
 }
 
 @layer utilities {
@@ -62,13 +106,125 @@
     font-weight: 900;
     font-variation-settings: "wght" 900;
   }
-  italic {
+  .italic {
     font-style: italic;
     font-variation-settings: "wght" var(--font-weight, 400);
   }
   .italic {
     font-style: italic;
     font-variation-settings: "wght" var(--font-weight, 400);
+  }
+
+  /* Optimal paragraph settings */
+  .text-paragraph {
+    font-size: var(--text-md);
+    line-height: var(--leading-normal);
+    max-width: 65ch; /* Ideal line length */
+    margin-bottom: var(--space-md);
+  }
+
+  /* Letter spacing for headings */
+  .heading-tight {
+    letter-spacing: -0.02em; /* Slightly tighter for General Sans */
+  }
+
+  /* Small caps for subtle emphasis */
+  .small-caps {
+    font-variant-caps: small-caps;
+    letter-spacing: 0.05em;
+  }
+
+  /* Optimal reading width + vertical rhythm */
+  .text-optimal {
+    /* Width Tuning */
+    max-width: 100ch; /* Increased to account for Switzer's narrow metrics */
+    width: calc(100% - 2rem); /* Prevents edge crowding */
+    
+    /* Font Adjustments */
+    font-size: 1.1rem; /* Slightly larger than your --text-md */
+    letter-spacing: 0.004em; /* Custom for Switzer */
+    word-spacing: 0.02em;
+    
+    /* Advanced Text Layout */
+    text-rendering: optimizeLegibility;
+    hyphens: auto; /* Better line breaks */
+    
+    /* Vertical Rhythm */
+    > * + * {
+      margin-top: var(--space-md);
+    }
+    
+    /* Paragraph-specific */
+    p {
+      text-wrap: pretty; /* Prevents single-word orphans */
+    }
+  }
+
+  .text-optimal {
+    h1, h2, h3, h4 {
+      font-family: var(--font-heading); /* General Sans */
+      line-height: var(--leading-tight); /* 1.2 */
+      margin-top: var(--space-xl); /* 32px */
+      margin-bottom: var(--space-sm); /* 12px */
+    }
+    
+    h1 { font-size: var(--text-3xl); } /* 48.83px */
+    h2 { font-size: var(--text-2xl); } /* 39.06px */
+    h3 { font-size: var(--text-xl); }  /* 31.25px */
+    a {
+      color: theme(--color-primary);
+      text-underline-offset: 0.25em;
+      &:hover {
+        text-decoration-thickness: 2px;
+      }
+    }
+    
+    /* Lists */
+    ul, ol {
+      padding-left: var(--space-md);
+      li {
+        margin-bottom: var(--space-xs); /* 8px */
+      }
+    }
+    
+    /* Quotes */
+    blockquote {
+      border-left: 3px solid theme(--color-primary);
+      padding-left: var(--space-md);
+      font-size: var(--text-lg); /* 24.98px */
+    }
+
+    /* Unordered lists (bullets) */
+    ul {
+      list-style-type: disc;
+      padding-left: var(--space-md); /* Match your spacing */
+      li::marker {
+        color: var(--color-primary); /* Optional: Style bullets */
+      }
+    }
+
+    /* Ordered lists (numbers) */
+    ol {
+      list-style-type: decimal;
+      padding-left: var(--space-md);
+    }
+
+    /* Nested lists */
+    ul ul, ol ol, ul ol, ol ul {
+      margin-top: var(--space-xs);
+      padding-left: var(--space-sm);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .text-optimal {
+      font-size: var(--text-sm); /* 16px on mobile */
+      max-width: 100%; /* Allows full width on small screens */
+      padding: 0 1rem; /* Prevents edge-to-edge text */
+      > * + * {
+        margin-top: var(--space-sm); /* 12px */
+      }
+    }
   }
 }
 
