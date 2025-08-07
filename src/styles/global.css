@@ -20,6 +20,58 @@
   }
 }
 
+@layer utilities {
+  /* Light */
+  .font-light {
+    font-weight: 300;
+    font-variation-settings: "wght" 300;
+  }
+
+  /* Normal */
+  .font-normal {
+    font-weight: 400;
+    font-variation-settings: "wght" 400;
+  }
+
+  /* Medium */
+  .font-medium {
+    font-weight: 500;
+    font-variation-settings: "wght" 500;
+  }
+
+  /* Semibold */
+  .font-semibold {
+    font-weight: 600;
+    font-variation-settings: "wght" 600;
+  }
+
+  /* Bold */
+  .font-bold {
+    font-weight: 700;
+    font-variation-settings: "wght" 700;
+  }
+
+  /* Extrabold */
+  .font-extrabold {
+    font-weight: 800;
+    font-variation-settings: "wght" 800;
+  }
+
+  /* Black */
+  .font-black {
+    font-weight: 900;
+    font-variation-settings: "wght" 900;
+  }
+  italic {
+    font-style: italic;
+    font-variation-settings: "wght" var(--font-weight, 400);
+  }
+  .italic {
+    font-style: italic;
+    font-variation-settings: "wght" var(--font-weight, 400);
+  }
+}
+
 /* Font face declarations (only need these 4) */
 @font-face {
   font-family: 'GeneralSans-Variable';
