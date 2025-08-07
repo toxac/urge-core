@@ -4,20 +4,53 @@
 @layer base {
   /* Define font family CSS variable */
   :root {
-    --font-general-sans: 'GeneralSans-Variable', system-ui, sans-serif;
-    --font-switzer: 'Switzer-Variable', system-ui, sans-serif;
+    --font-heading: 'GeneralSans-Variable', system-ui, sans-serif;
+    --font-body: 'Switzer-Variable', system-ui, sans-serif;
   }
-
   /* Apply font family globally */
   html {
-    font-family: var(--font-inter);
-    font-weight: 400; /* Default weight */
+    font-family: var(--font-body);
+    font-variation-settings: "wght" 400; /* Regular weight */
   }
 
   /* Optional: Set default weights for headings */
-  h1, h2, h3, h4 {
-    font-weight: 700;
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-variation-settings: "wght" 700; /* Bold weight */
   }
+}
+
+/* Font face declarations (only need these 4) */
+@font-face {
+  font-family: 'GeneralSans-Variable';
+  src: url('/fonts/GeneralSans-Variable.woff2') format('woff2');
+  font-weight: 200 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'GeneralSans-Variable';
+  src: url('/fonts/GeneralSans-VariableItalic.woff2') format('woff2');
+  font-weight: 200 700;
+  font-display: swap;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Switzer-Variable';
+  src: url('/fonts/Switzer-Variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Switzer-Variable';
+  src: url('/fonts/Switzer-VariableItalic.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: italic;
 }
 
 @layer utilities {
