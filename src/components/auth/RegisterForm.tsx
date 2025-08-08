@@ -127,6 +127,12 @@ export default function RegisterForm(incomingProps: RegisterFormProps) {
     // Success button click handler
     const handleSuccessNavigation = () => {
 
+        if ((props.intent === 'enroll' || props.intent === 'subscribe' || props.intent === 'event') && !props.details) {
+            console.error('Missing required details for', props.intent);
+            navigate('/dashboard');
+            return;
+        }
+
         switch (props.intent) {
             case 'enroll':
             case 'subscribe':
