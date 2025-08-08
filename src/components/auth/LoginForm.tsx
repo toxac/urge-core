@@ -1,84 +1,133 @@
-import { createSignal } from 'solid-js'
-import { useAuth } from '../../hooks/useAuth'
+import { createSignal, Show } from "solid-js";
+import { Icon } from '@iconify-icon/solid';
+import { createForm } from "@felte/solid";
+import { validator } from "@felte/validator-zod";
+import { z } from "zod";
+import { navigate } from "astro:transitions/client";
+import { supabaseBrowserClient } from "../../lib/supabase/client";
+
+const schema = z.object({
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(1, "Password is required")
+});
 
 export default function LoginForm() {
-    const { login, auth, error } = useAuth()
-    const [email, setEmail] = createSignal('')
-    const [password, setPassword] = createSignal('')
-    const [message, setMessage] = createSignal('')
+    const [authError, setAuthError] = createSignal<string | null>(null);
+    const [isSuccess, setIsSuccess] = createSignal(false);
+    const supabase = supabaseBrowserClient;
 
-    const handleSubmit = async (e: Event) => {
-        e.preventDefault()
-        setMessage('')
+    const { form, errors, isSubmitting, isValid, touched } = createForm({
+        extend: validator({ schema }),
+        onSubmit: async (values) => {
+            setAuthError(null);
 
-        const result = await login(email(), password())
+            try {
+                const { error } = await supabase.auth.signInWithPassword({
+                    email: values.email,
+                    password: values.password
+                });
 
-        if (result.success) {
-            setMessage('Login successful!')
-            // Redirect will happen automatically via auth state change
+                if (error) throw error;
+
+                setIsSuccess(true);
+                navigate('/dashboard'); // Redirect on success
+            } catch (error) {
+                console.error("Login error:", error);
+                setAuthError("Login failed. Please try again.");
+            }
         }
-    }
+    });
 
     return (
-        <div class="card w-96 bg-base-100 shadow-xl">
+        <div class="card w-full md:w-96 bg-base-100 shadow-xl">
             <div class="card-body">
-                <h2 class="card-title">Login</h2>
+                <h2 class="card-title text-2xl font-bold mb-4">
+                    {isSuccess() ? "Login Successful!" : "Login"}
+                </h2>
 
-                <form onSubmit={handleSubmit}>
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text">Email</span>
-                        </label>
-                        <input
-                            type="email"
-                            placeholder="email@example.com"
-                            class="input input-bordered"
-                            value={email()}
-                            onInput={(e) => setEmail(e.currentTarget.value)}
-                            required
-                        />
-                    </div>
-
-                    <div class="form-control">
-                        <label class="label">
-                            <span class="label-text">Password</span>
-                        </label>
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            class="input input-bordered"
-                            value={password()}
-                            onInput={(e) => setPassword(e.currentTarget.value)}
-                            required
-                        />
-                    </div>
-
-                    {error() && (
-                        <div class="alert alert-error">
-                            <span>{error()}</span>
+                <Show when={!isSuccess()}>
+                    <form use:form class="flex flex-col gap-4">
+                        {/* Email Field */}
+                        <div class="form-control">
+                            <label class="input w-full">
+                                <Icon icon="mdi:alternate-email" width="20" height="20" />
+                                <input
+                                    name="email"
+                                    type="email"
+                                    class="grow px-2"
+                                    placeholder="your@email.com"
+                                    autocomplete="email"
+                                />
+                                <Show when={errors().email && touched().email}>
+                                    <Icon icon="mdi:close-circle-outline" class="text-error" />
+                                </Show>
+                                <Show when={!errors().email && touched().email}>
+                                    <Icon icon="mdi:check-bold" class="text-success" />
+                                </Show>
+                            </label>
+                            <Show when={errors().email && touched().email}>
+                                <span class="text-error text-xs mt-1">{errors().email}</span>
+                            </Show>
                         </div>
-                    )}
 
-                    {message() && (
-                        <div class="alert alert-success">
-                            <span>{message()}</span>
+                        {/* Password Field */}
+                        <div class="form-control">
+                            <label class="input w-full">
+                                <Icon icon="mdi:key-variant" width="20" height="20" />
+                                <input
+                                    name="password"
+                                    type="password"
+                                    class="grow px-2"
+                                    placeholder="••••••••"
+                                    autocomplete="current-password"
+                                />
+                                <Show when={errors().password && touched().password}>
+                                    <Icon icon="mdi:close-circle-outline" class="text-error" />
+                                </Show>
+                                <Show when={!errors().password && touched().password}>
+                                    <Icon icon="mdi:check-bold" class="text-success" />
+                                </Show>
+                            </label>
+                            <Show when={errors().password && touched().password}>
+                                <span class="text-error text-xs mt-1">{errors().password}</span>
+                            </Show>
                         </div>
-                    )}
 
-                    <div class="form-control mt-6">
+                        {/* Auth Error */}
+                        <Show when={authError()}>
+                            <div class="alert alert-error">
+                                <Icon icon="mdi:alert-circle" />
+                                <span>{authError()}</span>
+                            </div>
+                        </Show>
+
                         <button
+                            class="btn btn-primary mt-4"
                             type="submit"
-                            class="btn btn-primary"
-                            disabled={auth().loading}
+                            disabled={!isValid() || isSubmitting()}
                         >
-                            {auth().loading ? (
-                                <span class="loading loading-spinner"></span>
-                            ) : (
-                                'Login'
-                            )}
+                            {isSubmitting() ? (
+                                <>
+                                    <span class="loading loading-spinner"></span>
+                                    Logging in...
+                                </>
+                            ) : 'Login'}
+                        </button>
+                    </form>
+                </Show>
+
+                <Show when={isSuccess()}>
+                    <div class="flex flex-col items-center text-center">
+                        <div class="text-5xl mb-4">👋</div>
+                        <p class="text-lg mb-6">Redirecting to dashboard...</p>
+                        <button
+                            class="btn btn-primary w-full"
+                            onClick={() => navigate('/dashboard')}
+                        >
+                            Continue to Dashboard
                         </button>
                     </div>
-                </form>
+                </Show>
 
                 <div class="divider">OR</div>
 
@@ -93,5 +142,5 @@ export default function LoginForm() {
                 </div>
             </div>
         </div>
-    )
+    );
 }

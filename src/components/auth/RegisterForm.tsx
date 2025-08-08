@@ -1,10 +1,31 @@
-import { createSignal, Show } from "solid-js";
+import { createSignal, Show, onMount, mergeProps } from "solid-js";
 import { Icon } from '@iconify-icon/solid';
 import { navigate } from "astro:transitions/client";
 import { createForm } from "@felte/solid";
 import { validator } from "@felte/validator-zod";
 import { z } from "zod";
 import { supabaseBrowserClient } from "../../lib/supabase/client";
+import { onboardingContext } from "../../stores/onboarding";
+
+interface RegisterFormProps {
+    intent?: 'register' | 'enroll' | 'subscribe' | 'challenge' | 'event';
+    details?: string;
+}
+
+const defaultProps: Partial<RegisterFormProps> = {
+    intent: 'register',
+    details: ''
+};
+
+type UsernameStatus = "notset" | "checking" | "available" | "unavailable";
+
+const successButtonTexts = {
+    register: 'Continue to Dashboard',
+    enroll: 'Continue to Enrollment',
+    subscribe: 'Complete Subscription',
+    event: 'Register for Event',
+    challenge: 'Go to Challenge'
+};
 
 const schema = z.object({
     username: z.string()
@@ -24,18 +45,26 @@ const schema = z.object({
     path: ["confirmPassword"]
 });
 
-export default function RegisterForm() {
+export default function RegisterForm(incomingProps: RegisterFormProps) {
+    const props = mergeProps(defaultProps, incomingProps);
     const [isSuccess, setIsSuccess] = createSignal(false);
-    const [showPassword, setShowPassword] = createSignal(false);
-    const [showConfirmPassword, setShowConfirmPassword] = createSignal(false);
-    const [isCheckingUsername, setIsCheckingUsername] = createSignal(false);
-    const [usernameAvailable, setUsernameAvailable] = createSignal<boolean | null>(null);
+    const [usernameStatus, setUsernameStatus] = createSignal<UsernameStatus>("notset");
+    const [authError, setAuthError] = createSignal<string | null>(null);
     const supabase = supabaseBrowserClient;
 
-    const { form, errors, data, isSubmitting } = createForm({
+    onMount(() => {
+        onboardingContext.set({
+            intent: props.intent || 'register',
+            details: props.details || ''
+        });
+    });
+
+    const { form, errors, data, isSubmitting, isValid, touched } = createForm({
         extend: validator({ schema }),
         onSubmit: async (values) => {
-            if (usernameAvailable() !== true) {
+            setAuthError(null);
+            if (usernameStatus() !== "available") {
+                setAuthError("Please choose an available username");
                 return;
             }
 
@@ -62,17 +91,18 @@ export default function RegisterForm() {
                 setIsSuccess(true);
             } catch (error) {
                 console.error("Registration error:", error);
+                setAuthError("Registration failed. Please try again.");
             }
         }
     });
 
     const checkUsername = async (username: string) => {
         if (username.length < 3) {
-            setUsernameAvailable(null);
+            setUsernameStatus("notset");
             return;
         }
 
-        setIsCheckingUsername(true);
+        setUsernameStatus("checking");
         try {
             const { data, error } = await supabase
                 .from("user_profiles")
@@ -81,11 +111,34 @@ export default function RegisterForm() {
                 .maybeSingle();
 
             if (error) throw error;
-            setUsernameAvailable(!data);
+            if (data) {
+                setUsernameStatus("unavailable");
+            } else {
+                setUsernameStatus("available");
+            }
+
         } catch (error) {
             console.error("Username check error:", error);
         } finally {
-            setIsCheckingUsername(false);
+            setUsernameStatus("notset");
+        }
+    };
+
+    // Success button click handler
+    const handleSuccessNavigation = () => {
+
+        switch (props.intent) {
+            case 'enroll':
+            case 'subscribe':
+            case 'event':
+                navigate(`/payments?intent=${props.intent}&details=${props.details}`);
+                break;
+            case 'challenge':
+                navigate(`/challenges/${props.details}`);
+                break;
+            case 'register':
+            default:
+                navigate('/dashboard');
         }
     };
 
@@ -97,118 +150,136 @@ export default function RegisterForm() {
                 </h2>
 
                 <Show when={!isSuccess()}>
-                    <form use:form class="flex flex-col gap-3">
+                    <form use:form class="flex flex-col gap-4">
 
                         {/* Username Field */}
-                        <label class="input w-full">
-                            <Icon icon="mdi:account" width="24" height="24" class="text-nuetral" />
-                            <input
-                                type="text"
-                                class="grow px-2"
-                                name="username"
-                                placeholder="username"
-                                onBlur={(e) => checkUsername(e.currentTarget.value)}
-                            />
-                        </label>
-                        <div class="mb-1 text-xs">
-                            {isCheckingUsername() && <span class="text-info">Checking...</span>}
-                            {usernameAvailable() === true && <p class="flex items-center justify-end gap-2 opacity-60"><Icon icon="mdi:check-circle-outline" width="18" height="18" class="text-success" /> Available</p>}
-                            {usernameAvailable() === false && <span class="text-error">✗ Taken</span>}
-                            {errors().username && <span class="text-error">{errors().username}</span>}
+                        <div class="form-control">
+                            <label class="input w-full">
+                                <Icon icon="mdi:account" width="20" height="20" />
+                                <input
+                                    type="text"
+                                    name="username"
+                                    class="px-2 grow"
+                                    placeholder="username"
+                                    autocomplete="off"
+                                    onBlur={(e) => checkUsername(e.currentTarget.value)}
+                                />
+                                {usernameStatus() === "checking" ?
+                                    <span class="loading loading-spinner loading-sm text-primary"></span> :
+                                    usernameStatus() === "available" ?
+                                        <Icon icon="mdi:check-bold" class="text-success" /> :
+                                        usernameStatus() === "unavailable" ?
+                                            <Icon icon="mdi:close-circle-outline" class="text-error" /> : null
+                                }
+                            </label>
+                            <Show when={errors().username && touched().username}>
+                                <span class="text-error text-xs mt-1">{errors().username}</span>
+                            </Show>
+                            <Show when={usernameStatus() === "unavailable" && touched().username}>
+                                <span class="text-error text-xs mt-1">Username is already taken</span>
+                            </Show>
                         </div>
-
-
-                        <label class="input w-full">
-                            <Icon icon="mdi:alternate-email" width="24" height="24" class="text-nuetral" />
-                            <input
-                                name="email"
-                                type="email"
-                                class="grow px-2"
-                                placeholder="your@email.com"
-                                onBlur={(e) => checkUsername(e.currentTarget.value)}
-                            />
-                        </label>
-                        <div class="h-6 mt-1 text-sm">
-                            {errors().email && <span class="text-error text-sm">{errors().email}</span>}
-                        </div>
-
-
 
                         {/* Email Field */}
-
-
-                        {/* Password Fields */}
-                        <div class="form-control w-full">
-                            <label class="label">
-                                <span class="label-text">Password</span>
+                        <div class="form-control">
+                            <label class="input w-full">
+                                <Icon icon="mdi:alternate-email" width="20" height="20" />
+                                <input
+                                    name="email"
+                                    type="email"
+                                    class="grow px-2"
+                                    autocomplete="email"
+                                    placeholder="your@email.com"
+                                />
+                                <Show when={errors().email && touched().email}>
+                                    <Icon icon="mdi:close-circle-outline" class="text-error" />
+                                </Show>
+                                <Show when={!errors().email && touched().email}>
+                                    <Icon icon="mdi:check-bold" class="text-success" />
+                                </Show>
                             </label>
-                            <div class="relative">
+                            <Show when={errors().email && touched().email}>
+                                <span class="text-error text-xs mt-1">{errors().email}</span>
+                            </Show>
+                        </div>
+
+                        {/* Password Field */}
+                        <div class="form-control">
+                            <label class="input w-full">
+                                <Icon icon="mdi:key-variant" width="20" height="20" />
                                 <input
                                     name="password"
-                                    type={showPassword() ? "text" : "password"}
-                                    class="input input-bordered w-full pr-10"
+                                    type="password"
+                                    class="grow px-2"
                                     placeholder="••••••••"
                                 />
-                                <button
-                                    type="button"
-                                    class="absolute inset-y-0 right-0 pr-3"
-                                    onClick={() => setShowPassword(!showPassword())}
-                                >
-                                    {showPassword() ?
-                                        <Icon icon="mdi:eye-off" width="24" height="24" /> :
-                                        <Icon icon="mdi:eye" width="24" height="24" />
-                                    }
-                                </button>
-                            </div>
-                            {errors().password && <span class="text-error text-sm">{errors().password}</span>}
+                                <Show when={errors().password && touched().password}>
+                                    <Icon icon="mdi:close-circle-outline" class="text-error" />
+                                </Show>
+                                <Show when={!errors().password && touched().password}>
+                                    <Icon icon="mdi:check-bold" class="text-success" />
+                                </Show>
+                            </label>
+                            <Show when={errors().password && touched().password}>
+                                <span class="text-error text-xs mt-1">{errors().password}</span>
+                            </Show>
                         </div>
 
-                        <div class="form-control w-full">
-                            <label class="label">
-                                <span class="label-text">Confirm Password</span>
-                            </label>
-                            <div class="relative">
+                        {/* Confirm Password Field */}
+                        <div class="form-control">
+                            <label class="input w-full">
+                                <Icon icon="mdi:key-variant" width="20" height="20" />
                                 <input
                                     name="confirmPassword"
-                                    type={showConfirmPassword() ? "text" : "password"}
-                                    class="input input-bordered w-full pr-10"
+                                    type="password"
+                                    class="grow px-2"
                                     placeholder="••••••••"
                                 />
-                                <button
-                                    type="button"
-                                    class="absolute inset-y-0 right-0 pr-3"
-                                    onClick={() => setShowConfirmPassword(!showConfirmPassword())}
-                                >
-                                    {showConfirmPassword() ?
-                                        <Icon icon="mdi:eye-off" width="24" height="24" /> :
-                                        <Icon icon="mdi:eye" width="24" height="24" />
-                                    }
-                                </button>
-                            </div>
-                            {errors().confirmPassword && (
-                                <span class="text-error text-sm">{errors().confirmPassword}</span>
-                            )}
+                                <Show when={errors().confirmPassword && touched().confirmPassword}>
+                                    <Icon icon="mdi:close-circle-outline" class="text-error" />
+                                </Show>
+                                <Show when={!errors().confirmPassword && touched().confirmPassword}>
+                                    <Icon icon="mdi:check-bold" class="text-success" />
+                                </Show>
+                            </label>
+                            <Show when={errors().confirmPassword && touched().confirmPassword}>
+                                <span class="text-error text-xs mt-1">{errors().confirmPassword}</span>
+                            </Show>
                         </div>
+
+                        {/* Form-level errors - always show if present */}
+                        <Show when={authError()}>
+                            <div class="alert alert-error">
+                                <Icon icon="mdi:alert-circle" />
+                                <span>{authError()}</span>
+                            </div>
+                        </Show>
 
                         <button
                             class="btn btn-primary mt-4"
                             type="submit"
-                            disabled={isSubmitting() || isCheckingUsername() || usernameAvailable() !== true}
+                            disabled={!isValid() || isSubmitting() || usernameStatus() !== "available"}
                         >
-                            {isSubmitting() ? "Creating account..." : "Register"}
+                            {isSubmitting() ? (
+                                <>
+                                    <span class="loading loading-spinner"></span>
+                                    Creating account...
+                                </>
+                            ) : "Register"}
                         </button>
                     </form>
                 </Show>
 
+                {/* Success state remains the same */}
                 <Show when={isSuccess()}>
                     <div class="flex flex-col items-center text-center">
                         <div class="text-5xl mb-4">🎉</div>
                         <p class="text-lg mb-6">Your account has been created!</p>
                         <button
                             class="btn btn-primary w-full"
-                            onClick={() => navigate('/dashboard')}
+                            onClick={handleSuccessNavigation}
                         >
-                            Continue to Dashboard
+                            {successButtonTexts[props.intent || 'register']}
                         </button>
                     </div>
                 </Show>

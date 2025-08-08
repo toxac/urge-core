@@ -1,12 +1,12 @@
 // stores/onboardingContext.ts
 import { atom } from 'nanostores';
 
-export type RegisterContext = {
-    intent: 'register' | 'enroll' | 'subscribe' | 'challenge';
+export type OnboardingContext = {
+    intent: 'register' | 'enroll' | 'subscribe' | 'challenge' | 'event';
     details?: string; // add reference ids either of program or challenge
 }
 
-export const registerContext = atom<RegisterContext>({
+export const onboardingContext = atom<OnboardingContext>({
     intent: "register",
     details: ""
 });
